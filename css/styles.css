@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.chart-container {
+    width: 80%;
+    height: 400px;
+    margin: 20px 0;
+}
+
+input[type="date"], button {
+    margin: 10px;
+    padding: 5px;
+    font-size: 1em;
+}
