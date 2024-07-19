@@ -5,13 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Time Series Charts</title>
     <link rel="stylesheet" type="text/css" href="styles/fullpage.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <style>
-        .chart-container {
-            width: 100%;
-            height: 600px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
 </head>
 <body>
     <div id="fullpage">
@@ -20,17 +14,14 @@
                 <h2>Chart for 2014</h2>
                 <div id="chart-2014" class="chart-container"></div>
             </div>
-
             <div class="slide" data-anchor="2015">
                 <h2>Chart for 2015</h2>
                 <div id="chart-2015" class="chart-container"></div>
             </div>
-
             <div class="slide" data-anchor="2016">
                 <h2>Chart for 2016</h2>
                 <div id="chart-2016" class="chart-container"></div>
             </div>
-
             <div class="slide" data-anchor="slider">
                 <h2>Chart with Date Slider</h2>
                 <div>
@@ -53,6 +44,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             new fullpage('#fullpage', {
                 scrollOverflow: true,
+                navigation: true,
+                navigationPosition: 'right',
                 onLeave: function(origin, destination, direction) {
                     const charts = {
                         1: ['2014-01-01', '2014-12-31', 'chart-2014'],
@@ -60,9 +53,9 @@
                         3: ['2016-01-01', '2016-12-31', 'chart-2016']
                     };
                     if (charts[destination.index + 1]) {
-                        const [start, end, containerId] = charts[destination.index + 1];
-                        d3.select(`#${containerId}`).selectAll("*").remove();
-                        chart(start, end, containerId);
+                        const [start, end, scene] = charts[destination.index + 1];
+                        d3.select(`#${scene}`).selectAll("*").remove();
+                        chart(start, end, scene);
                     }
                 }
             });

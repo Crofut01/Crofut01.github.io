@@ -11,94 +11,94 @@ Parameters:
 
 function chart(start, end, scene) {
     
-    // Parse the date and time
-    const parseDate = d3.timeParse("%Y-%m-%d");
-    
-    // Set the dimensions and margins of the graph
-    const margin = {top: 20, right: 30, bottom: 30, left: 50},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-    
-    // Append the SVG object to the body of the page
-    const svg = d3.select(`#${scene}`)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-    
-    // Load the data
-    d3.csv("data/gun-violence-data_01-2013_03-2018-small.csv").then(data => {
-        // Format the data
+    d3.csv('data/gun-violence-data_01-2013_03-2018-small.csv').then(data => {
+        // Parse date and filter data
+        const parseDate = d3.timeParse('%m/%d/%Y');
         data.forEach(d => {
             d.date = parseDate(d.date);
             d.n_killed = +d.n_killed;
             d.n_injured = +d.n_injured;
         });
-        
-        // Filter data based on the provided date range
-        data = data.filter(d => d.date >= new Date(start) && d.date <= new Date(end));
-        
+
+        const filteredData = data.filter(d => d.date >= new Date(startDate) && d.date <= new Date(endDate));
+
         // Aggregate data by date
-        const aggregatedData = d3.rollups(data, v => ({
-            date: v[0].date,
-            n_killed: d3.sum(v, d => d.n_killed),
-            n_injured: d3.sum(v, d => d.n_injured),
-            incident_count: v.length
-        }), d => d.date).map(d => d[1]);
-        
-        // Set the ranges
-        const x = d3.scaleTime().range([0, width]);
-        const y = d3.scaleLinear().range([height, 0]);
-        
-        // Scale the range of the data
-        x.domain(d3.extent(aggregatedData, d => d.date));
-        y.domain([0, d3.max(aggregatedData, d => Math.max(d.n_killed, d.n_injured, d.incident_count))]);
-        
-        // Add the X Axis
-        svg.append("g")
-            .attr("transform", `translate(0,${height})`)
+        const aggregatedData = d3.rollup(
+            filteredData,
+            v => ({
+                n_killed: d3.sum(v, d => d.n_killed),
+                n_injured: d3.sum(v, d => d.n_injured),
+                incident_count: v.length
+            }),
+            d => d3.timeDay(d.date)
+        );
+
+        const aggregatedArray = Array.from(aggregatedData, ([date, values]) => ({
+            date,
+            ...values
+        }));
+
+        // Set up the SVG and scales
+        const svg = d3.select(`#${scene}`).append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox', '0 0 800 400')
+            .attr('preserveAspectRatio', 'xMidYMid meet');
+
+        const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+        const width = 800 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
+
+        const x = d3.scaleTime()
+            .domain(d3.extent(aggregatedArray, d => d.date))
+            .range([margin.left, width - margin.right]);
+
+        const y = d3.scaleLinear()
+            .domain([0, d3.max(aggregatedArray, d => Math.max(d.n_killed, d.n_injured, d.incident_count))])
+            .nice()
+            .range([height - margin.bottom, margin.top]);
+
+        const line = d3.line()
+            .x(d => x(d.date))
+            .y(d => y(d.value));
+
+        const color = d3.scaleOrdinal()
+            .domain(['n_killed', 'n_injured', 'incident_count'])
+            .range(['#e41a1c', '#377eb8', '#4daf4a']);
+
+        const keys = ['n_killed', 'n_injured', 'incident_count'];
+
+        svg.append('g')
+            .attr('transform', `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x));
-        
-        // Add the Y Axis
-        svg.append("g")
+
+        svg.append('g')
+            .attr('transform', `translate(${margin.left},0)`)
             .call(d3.axisLeft(y));
-        
-        // Define the line for deaths
-        const deathsLine = d3.line()
-            .x(d => x(d.date))
-            .y(d => y(d.n_killed));
-        
-        // Define the line for injuries
-        const injuriesLine = d3.line()
-            .x(d => x(d.date))
-            .y(d => y(d.n_injured));
-        
-        // Define the line for incident count
-        const incidentCountLine = d3.line()
-            .x(d => x(d.date))
-            .y(d => y(d.incident_count));
-        
-        // Add the deathsLine path
-        svg.append("path")
-            .data([aggregatedData])
-            .attr("class", "line")
-            .style("stroke", "red")
-            .attr("d", deathsLine);
-        
-        // Add the injuriesLine path
-        svg.append("path")
-            .data([aggregatedData])
-            .attr("class", "line")
-            .style("stroke", "blue")
-            .attr("d", injuriesLine);
-        
-        // Add the incidentCountLine path
-        svg.append("path")
-            .data([aggregatedData])
-            .attr("class", "line")
-            .style("stroke", "green")
-            .attr("d", incidentCountLine);
+
+        const lineData = keys.map(key => ({
+            id: key,
+            values: aggregatedArray.map(d => ({ date: d.date, value: d[key] }))
+        }));
+
+        const lines = svg.append('g')
+            .selectAll('.line-group')
+            .data(lineData)
+            .enter()
+            .append('g')
+            .attr('class', 'line-group');
+
+        lines.append('path')
+            .attr('class', 'line')
+            .attr('d', d => line(d.values))
+            .style('stroke', d => color(d.id));
+
+        lines.append('text')
+            .datum(d => ({ id: d.id, value: d.values[d.values.length - 1] }))
+            .attr('transform', d => `translate(${x(d.value.date)},${y(d.value.value)})`)
+            .attr('x', 5)
+            .attr('dy', '.35em')
+            .text(d => d.id);
     });
 
 }
