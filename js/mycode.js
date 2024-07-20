@@ -67,19 +67,19 @@ function create_chart(start, end, scene) {
         svg.append("path")
             .datum(nestedData)
             .attr("class", "line")
-            .attr("d", lineKilled)
+            .attr("d", killedLine)
             .attr("stroke", "red");
 
         svg.append("path")
             .datum(nestedData)
             .attr("class", "line")
-            .attr("d", lineInjured)
+            .attr("d", injuredLine)
             .attr("stroke", "blue");
 
         svg.append("path")
             .datum(nestedData)
             .attr("class", "line")
-            .attr("d", lineIncidents)
+            .attr("d", incidentsLine)
             .attr("stroke", "green");
 
         // Add the x and y axes
@@ -89,7 +89,7 @@ function create_chart(start, end, scene) {
 
         svg.append("g")
             .call(d3.axisLeft(y));
-            
+
 
 
     }).catch(function(error) {
