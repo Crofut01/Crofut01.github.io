@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
         });
         console.log(data); 
-        document.getElementById('data-status').innerText = 'Data loaded successfully.';
+        document.getElementById('scene0').innerText = 'Data loaded successfully.';
 
     } catch (error) {
         console.error('Error loading data', error);
-        document.getElementById('data-status').innerText = 'Failed to load data.';
+        document.getElementById('scene0').innerText = 'Failed to load data.';
     }
 
     // Handle scene navigation
