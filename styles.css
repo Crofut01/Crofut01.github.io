@@ -12,3 +12,31 @@ body {
 #data-status.error {
     color: red;
 }
+
+.scene {
+    display: none;
+    margin-top: 20px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    position: relative;
+}
+
+.nextArrow, .prevArrow {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.nextArrow {
+    right: 10px;
+}
+
+.prevArrow {
+    left: 10px;
+}
