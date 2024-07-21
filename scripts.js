@@ -71,25 +71,31 @@ Params:
 ---*/
 function createChart(sceneNumber) {
     console.log(`drawCircle called with sceneNumber: ${sceneNumber}`);
-    
-    // SVG dimensions
-    const svgWidth = 500;
-    const svgHeight = 500;
 
-    // Create and append the SVG to the body if not already created
-    let svg = d3.select('body').select('svg');
+    // SVG dimensions
+    const svgWidth = window.innerWidth;
+    const svgHeight = window.innerHeight;
+
+    // Find the current scene
+    const currentScene = document.querySelector('.scene:not([style*="display: none"])');
+    if (!currentScene) {
+        console.error('No visible scene found');
+        return;
+    }
+
+    // Select existing SVG or create a new one if it doesn't exist
+    let svg = d3.select(currentScene).select('svg');
     if (svg.empty()) {
-        svg = d3.select('body').append('svg')
+        svg = d3.select(currentScene).append('svg')
             .attr('width', svgWidth)
             .attr('height', svgHeight);
-        console.log('SVG created and appended to the body');
+        console.log('SVG created and appended to the current scene');
     } else {
         console.log('SVG already exists');
+        // Clear previous contents
+        svg.selectAll('*').remove();
     }
-    
-    // Clear previous circles
-    svg.selectAll('*').remove();
-    
+
     // Define circle attributes based on scene number
     let x, y, radius, color;
     switch (sceneNumber) {
@@ -106,14 +112,17 @@ function createChart(sceneNumber) {
         default:
             x = svgWidth / 2; y = svgHeight / 2; radius = 50; color = 'gray'; break;
     }
-    
+
     // Log circle attributes to verify
     console.log(`Drawing circle with x: ${x}, y: ${y}, radius: ${radius}, color: ${color}`);
-    
+
     // Append the circle to the SVG
     svg.append('circle')
         .attr('cx', x)
         .attr('cy', y)
         .attr('r', radius)
         .attr('fill', color);
+    
+    // Log the SVG contents for debugging
+    console.log('SVG contents:', svg.node().innerHTML);
 }
