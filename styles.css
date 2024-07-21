@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#data-status {
+    margin-top: 20px;
+    font-size: 18px;
+    color: green;
+}
+
+#data-status.error {
+    color: red;
+}
