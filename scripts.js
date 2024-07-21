@@ -70,67 +70,50 @@ Params:
     sceneNumber: scene number
 ---*/
 function createChart(sceneNumber) {
-    console.log(`createChart called with sceneNumber: ${sceneNumber}`);
-
+    console.log(`drawCircle called with sceneNumber: ${sceneNumber}`);
+    
+    // SVG dimensions
     const svgWidth = 500;
     const svgHeight = 500;
 
-    // Create and append the SVG to the body or a specific container if not already created
+    // Create and append the SVG to the body if not already created
     let svg = d3.select('body').select('svg');
     if (svg.empty()) {
         svg = d3.select('body').append('svg')
             .attr('width', svgWidth)
             .attr('height', svgHeight);
+        console.log('SVG created and appended to the body');
+    } else {
+        console.log('SVG already exists');
     }
     
     // Clear previous circles
     svg.selectAll('*').remove();
     
+    // Define circle attributes based on scene number
     let x, y, radius, color;
-
     switch (sceneNumber) {
         case 1:
-            x = 100;
-            y = 100;
-            radius = 50;
-            color = 'steelblue';
-            break;
+            x = 100; y = 100; radius = 50; color = 'steelblue'; break;
         case 2:
-            x = 200;
-            y = 200;
-            radius = 75;
-            color = 'green';
-            break;
+            x = 200; y = 200; radius = 75; color = 'green'; break;
         case 3:
-            x = 300;
-            y = 300;
-            radius = 100;
-            color = 'red';
-            break;
+            x = 300; y = 300; radius = 100; color = 'red'; break;
         case 4:
-            x = 400;
-            y = 400;
-            radius = 125;
-            color = 'purple';
-            break;
+            x = 400; y = 400; radius = 125; color = 'purple'; break;
         case 5:
-            x = 250;
-            y = 250;
-            radius = 150;
-            color = 'orange';
-            break;
+            x = 250; y = 250; radius = 150; color = 'orange'; break;
         default:
-            // Fallback if the scene number is not recognized
-            x = svgWidth / 2;
-            y = svgHeight / 2;
-            radius = 50;
-            color = 'gray';
-            break;
+            x = svgWidth / 2; y = svgHeight / 2; radius = 50; color = 'gray'; break;
     }
-
+    
+    // Log circle attributes to verify
+    console.log(`Drawing circle with x: ${x}, y: ${y}, radius: ${radius}, color: ${color}`);
+    
+    // Append the circle to the SVG
     svg.append('circle')
-        .attr('cx', x)              // x-coordinate of the circle's center
-        .attr('cy', y)              // y-coordinate of the circle's center
-        .attr('r', radius)          // radius of the circle
-        .attr('fill', color);       // fill color of the circle
+        .attr('cx', x)
+        .attr('cy', y)
+        .attr('r', radius)
+        .attr('fill', color);
 }
