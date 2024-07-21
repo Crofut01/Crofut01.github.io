@@ -38,16 +38,6 @@ body {
     border-radius: 5px;
 }
 
-.nextArrow, .prevArrow {
-    cursor: pointer;
-    position: absolute;
-    bottom: 20px;
-    padding: 10px;
-    background-color: #ddd;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 .nextArrow {
     right: 10px;
 }

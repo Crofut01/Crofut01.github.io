@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentScene < scenes.length - 1) {
                 currentScene++;
                 showScene(currentScene);
+                createChart(currentScene+1);
             }
         });
     });
@@ -46,10 +47,88 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentScene > 0) {
                 currentScene--;
                 showScene(currentScene);
+                createChart(currentScene+1);
             }
         });
     });
 
     // Begin with first scene
     showScene(currentScene);
+    createChart(currentScene+1);
 });
+
+
+
+/*---
+FUNCTION
+
+Draws a chart according to the parameters.
+
+Params:
+    start: start date
+    end: end date
+    sceneNumber: scene number
+---*/
+function createChart(sceneNumber) {
+    const svgWidth = 500;
+    const svgHeight = 500;
+
+    // Create and append the SVG to the body or a specific container if not already created
+    let svg = d3.select('body').select('svg');
+    if (svg.empty()) {
+        svg = d3.select('body').append('svg')
+            .attr('width', svgWidth)
+            .attr('height', svgHeight);
+    }
+    
+    // Clear previous circles
+    svg.selectAll('*').remove();
+    
+    let x, y, radius, color;
+
+    switch (sceneNumber) {
+        case 1:
+            x = 100;
+            y = 100;
+            radius = 50;
+            color = 'steelblue';
+            break;
+        case 2:
+            x = 200;
+            y = 200;
+            radius = 75;
+            color = 'green';
+            break;
+        case 3:
+            x = 300;
+            y = 300;
+            radius = 100;
+            color = 'red';
+            break;
+        case 4:
+            x = 400;
+            y = 400;
+            radius = 125;
+            color = 'purple';
+            break;
+        case 5:
+            x = 250;
+            y = 250;
+            radius = 150;
+            color = 'orange';
+            break;
+        default:
+            // Fallback if the scene number is not recognized
+            x = svgWidth / 2;
+            y = svgHeight / 2;
+            radius = 50;
+            color = 'gray';
+            break;
+    }
+
+    svg.append('circle')
+        .attr('cx', x)              // x-coordinate of the circle's center
+        .attr('cy', y)              // y-coordinate of the circle's center
+        .attr('r', radius)          // radius of the circle
+        .attr('fill', color);       // fill color of the circle
+}
