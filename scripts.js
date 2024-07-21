@@ -70,6 +70,8 @@ Params:
     sceneNumber: scene number
 ---*/
 function createChart(sceneNumber) {
+    console.log(`createChart called with sceneNumber: ${sceneNumber}`);
+
     const svgWidth = 500;
     const svgHeight = 500;
 
