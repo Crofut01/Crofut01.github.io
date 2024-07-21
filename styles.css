@@ -20,6 +20,8 @@ body {
     border: 1px solid #ccc;
     padding: 20px;
     position: relative;
+    min-height: 600px;
+    overflow: auto;
 }
 
 .nextArrow, .prevArrow {

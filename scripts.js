@@ -2,7 +2,17 @@
 document.addEventListener('DOMContentLoaded', async () => {
     // Check if the data loaded properly and display the results
     try {
-        const data = await d3.csv("data/gun_incidents.csv");
+        const data = await d3.csv("data/gun_incidents.csv", row => { // Parse data for D3
+            return {
+                incident_id: +row.incident_id,
+                date: new Date(row.date),
+                state: row.state,
+                city_or_county: row.city_or_county,
+                address: row.address,
+                n_killed: +row.n_killed,
+                n_injured: +row.n_injured
+            };
+        });
         console.log(data); 
         document.getElementById('data-status').innerText = 'Data loaded successfully.';
 
