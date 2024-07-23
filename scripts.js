@@ -266,7 +266,7 @@ Params:
     maxDate: maximum date on slider, last date on data
 ---*/
 function createDateSlider(minDate, maxDate) {
-    console.log('Date slider created');
+    console.log('Date slider being created');
 
     // Select the current visible scene
     const currentScene = document.querySelector('.scene:not([style*="display: none"])');
