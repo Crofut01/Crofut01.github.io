@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 break;
             case 3:
                 const sliderValues = d3.select('#slider-container').datum();
+                if (!sliderValues || sliderValues.length !== 2) {
+                    // Initialize with default min and max dates if none given
+                    sliderValues = [minDate, maxDate];
+                    d3.select('#slider-container').datum(sliderValues);
+                }
                 createChart(sliderValues[0], sliderValues[1], 4);
                 break;
             default:
