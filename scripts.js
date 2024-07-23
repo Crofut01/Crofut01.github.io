@@ -1,10 +1,10 @@
 // data as global var
+// minDate and maxDate as global vars
 let data = [];
+let minDate, maxDate;
 
 // Events to complete on startup
 document.addEventListener('DOMContentLoaded', async () => {
-
-    let minDate, maxDate;
 
     // Check if the data loaded properly and display the results
     try {
@@ -25,31 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         minDate = d3.min(data, d => d.date);
         maxDate = d3.max(data, d => d.date);
 
-        // Set slider attributes
-        const slider = document.querySelector('#date-slider');
-        slider.min = 0;
-        slider.max = 100;
-        slider.value = 0;
-
-        // Function to convert slider value to date
-        // 0-100 to minDate-maxDate
-        function sliderValueToDate(value) {
-            const range = maxDate - minDate;
-            return new Date(minDate.getTime() + (value / 100) * range);
-        }
-
-        // Function to update chart based on slider value
-        function updateChart() {
-            const selectedDate = sliderValueToDate(slider.value);
-            document.querySelector('#slider-label').textContent = `Date: ${selectedDate.toDateString()}`;
-            createChart(minDate, selectedDate, 4);  // Pass Scene 4 as the scene number
-        }
-
-        // Initial chart rendering
-        updateChart();
-
-        // Event listener for slider input
-        slider.addEventListener('input', updateChart);
+        // create the custom date slider
+        createDateSlider(minDate, maxDate);
 
     } catch (error) {
         console.error('Error loading data', error);
@@ -77,7 +54,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 createChart('2017-01-01', '2017-12-31', index);
                 break;
             case 3:
-                updateChart();
+                const sliderValues = d3.select('#slider-container').datum();
+                createChart(sliderValues[0], sliderValues[1], 4);
                 break;
             default:
                 console.log('Scene', index, 'does not require a chart.');
@@ -269,62 +247,86 @@ function createChart(startDate, endDate, sceneNumber) {
 
 /*---
 FUNCTION
-Testing paramaeters and general architecture to build my createChart function
+
+Creates a custom date slider
+
+Params:
+    minDate: minimum date on slider, first date on data
+    maxDate: maximum date on slider, last date on data
+    createChart: function defined above
 ---*/
-function drawCircle(sceneNumber) {
-    console.log(`drawCircle called with sceneNumber: ${sceneNumber}`);
+function createDateSlider(minDate, maxDate, createChart) {
+    console.log('date slider created');
 
-    // SVG dimensions
-    const svgWidth = window.innerWidth;
-    const svgHeight = window.innerHeight;
+    // create slider container
+    const sliderContainer = d3.select('#slider-container');
 
-    // Find the current scene
-    const currentScene = document.querySelector('.scene:not([style*="display: none"])');
-    if (!currentScene) {
-        console.error('No visible scene found');
-        return;
+    // set width and height
+    const svg = sliderContainer.append('svg')
+        .attr('width', 600)
+        .attr('height', 100);
+
+    // set margins and dims
+    const margin = { top: 10, right: 30, bottom: 30, left: 30 };
+    const width = 600 - margin.left - margin.right;
+    const height = 100 - margin.top - margin.bottom;
+
+    // scale for slider
+    const x = d3.scaleTime()
+        .domain([minDate, maxDate])
+        .range([0, width]);
+
+    const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    g.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .call(d3.axisBottom(x));
+
+    // Initial values
+    const handle1 = g.append('circle')
+        .attr('class', 'handle')
+        .attr('r', 8)
+        .attr('cx', x(minDate))
+        .attr('cy', height / 2)
+        .call(d3.drag().on('drag', dragged1));
+
+    const handle2 = g.append('circle')
+        .attr('class', 'handle')
+        .attr('r', 8)
+        .attr('cx', x(maxDate))
+        .attr('cy', height / 2)
+        .call(d3.drag().on('drag', dragged2));
+
+    // retrieve label elements from html
+    const startLabel = document.getElementById('start-label');
+    const endLabel = document.getElementById('end-label');
+
+    // function to update start and end labels, updates start and end dates to filter by
+    function updateLabels() {
+        console.log('labels updated');
+        const startDate = x.invert(handle1.attr('cx'));
+        const endDate = x.invert(handle2.attr('cx'));
+        startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
+        endLabel.textContent = `End Date: ${endDate.toDateString()}`;
+        d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
+        createChart(startDate, endDate, 4);  // Update chart
     }
 
-    // Select existing SVG or create a new one if it doesn't exist
-    let svg = d3.select(currentScene).select('svg');
-    if (svg.empty()) {
-        svg = d3.select(currentScene).append('svg')
-            .attr('width', svgWidth)
-            .attr('height', svgHeight);
-        console.log('SVG created and appended to the current scene');
-    } else {
-        console.log('SVG already exists');
-        // Clear previous contents
-        svg.selectAll('*').remove();
+    // functions to handle updates from slider drag
+    function dragged1(event) {
+        const newX = Math.max(0, Math.min(width, event.x));
+        handle1.attr('cx', newX);
+        updateLabels();
     }
 
-    // Define circle attributes based on scene number
-    let x, y, radius, color;
-    switch (sceneNumber) {
-        case 1:
-            x = 100; y = 100; radius = 50; color = 'steelblue'; break;
-        case 2:
-            x = 200; y = 200; radius = 75; color = 'green'; break;
-        case 3:
-            x = 300; y = 300; radius = 100; color = 'red'; break;
-        case 4:
-            x = 400; y = 400; radius = 125; color = 'purple'; break;
-        case 5:
-            x = 250; y = 250; radius = 150; color = 'orange'; break;
-        default:
-            x = svgWidth / 2; y = svgHeight / 2; radius = 50; color = 'gray'; break;
+    function dragged2(event) {
+        const newX = Math.max(0, Math.min(width, event.x));
+        handle2.attr('cx', newX);
+        updateLabels();
     }
 
-    // Log circle attributes to verify
-    console.log(`Drawing circle with x: ${x}, y: ${y}, radius: ${radius}, color: ${color}`);
+    // Initial labels update
+    updateLabels();
 
-    // Append the circle to the SVG
-    svg.append('circle')
-        .attr('cx', x)
-        .attr('cy', y)
-        .attr('r', radius)
-        .attr('fill', color);
-    
-    // Log the SVG contents for debugging
-    console.log('SVG contents:', svg.node().innerHTML);
 }

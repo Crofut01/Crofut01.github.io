@@ -25,10 +25,12 @@
     <div id="scene4" class="scene">
         <h2>Interactive Chart</h2>
         <p>Use the slider to filter data by date.</p>
-        <input type="range" id="date-slider" min="0" max="100" step="1" value="0">
-        <p id="slider-label">Date: </p>
+        <div id="slider-container"></div>
+        <div id="slider-labels">
+            <span id="start-label">Start Date: </span>
+            <span id="end-label">End Date: </span>
+        </div>
         <div id="chart"></div>
-        <div class="prevArrow">Previous</div>
         <div class="prevArrow">Previous</div>
     </div>
 
