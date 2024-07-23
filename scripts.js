@@ -3,6 +3,9 @@ let data = [];
 
 // Events to complete on startup
 document.addEventListener('DOMContentLoaded', async () => {
+
+    let minDate, maxDate;
+
     // Check if the data loaded properly and display the results
     try {
         data = await d3.csv("data/gun_incidents.csv", row => { // Parse data for D3
@@ -16,7 +19,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                 n_injured: +row.n_injured
             };
         });
-        console.log(data); 
+        console.log(data);
+        
+        // Store min and max date for slider
+        minDate = d3.min(data, d => d.date);
+        maxDate = d3.max(data, d => d.date);
+
+        // Set slider attributes
+        const slider = document.querySelector('#date-slider');
+        slider.min = 0;
+        slider.max = 100;
+        slider.value = 0;
+
+        // Function to convert slider value to date
+        // 0-100 to minDate-maxDate
+        function sliderValueToDate(value) {
+            const range = maxDate - minDate;
+            return new Date(minDate.getTime() + (value / 100) * range);
+        }
+
+        // Function to update chart based on slider value
+        function updateChart() {
+            const selectedDate = sliderValueToDate(slider.value);
+            document.querySelector('#slider-label').textContent = `Date: ${selectedDate.toDateString()}`;
+            createChart(minDate, selectedDate, 4);  // Pass Scene 4 as the scene number
+        }
+
+        // Initial chart rendering
+        updateChart();
+
+        // Event listener for slider input
+        slider.addEventListener('input', updateChart);
 
     } catch (error) {
         console.error('Error loading data', error);
@@ -42,6 +75,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 break;
             case 2:
                 createChart('2017-01-01', '2017-12-31', index);
+                break;
+            case 3:
+                updateChart();
                 break;
             default:
                 console.log('Scene', index, 'does not require a chart.');
