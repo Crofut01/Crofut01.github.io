@@ -5,7 +5,7 @@ let data = [];
 document.addEventListener('DOMContentLoaded', async () => {
     // Check if the data loaded properly and display the results
     try {
-        const data = await d3.csv("data/gun_incidents.csv", row => { // Parse data for D3
+        data = await d3.csv("data/gun_incidents.csv", row => { // Parse data for D3
             return {
                 incident_id: +row.incident_id,
                 date: new Date(row.date),
