@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Store min and max date for slider
         minDate = d3.min(data, d => d.date);
         maxDate = d3.max(data, d => d.date);
+        console.log('data ranging from: ', minDate, 'to: ', maxDate);
 
         // create the custom date slider
         createDateSlider(minDate, maxDate);
@@ -268,12 +269,12 @@ function createDateSlider(minDate, maxDate) {
     // set width and height
     const svg = sliderContainer.append('svg')
         .attr('width', 600)
-        .attr('height', 200);
+        .attr('height', 300);
 
     // set margins and dims
-    const margin = { top: 10, right: 30, bottom: 30, left: 30 };
+    const margin = { top: 30, right: 30, bottom: 30, left: 30 };
     const width = 600 - margin.left - margin.right;
-    const height = 200 - margin.top - margin.bottom;
+    const height = 300 - margin.top - margin.bottom;
 
     // scale for slider
     const x = d3.scaleTime()
