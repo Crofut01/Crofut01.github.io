@@ -85,7 +85,7 @@ Params:
     sceneNumber: scene number
 ---*/
 function createChart(startDate, endDate, sceneNumber) {
-    console.log('drawChart called from dates: ', start, 'to ', end);
+    console.log('drawChart called from dates: ', startDate, 'to ', endDate);
 
     // convert start and end to Date vars
     const start = new Date(startDate);
