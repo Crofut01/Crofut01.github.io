@@ -146,6 +146,11 @@ function createChart(startDate, endDate, sceneNumber) {
             .attr('width', svgWidth)
             .attr('height', svgHeight);
         console.log('SVG created and appended to scene', sceneNumber);
+    } else if (sceneNumber == 4) {
+        console.log('SVG already exists in scene', sceneNumber);
+        console.log('slider not deleted')
+        // Clear previous contents, but not the slider
+        svg.selectAll('*:not(.slider)').remove();
     } else {
         console.log('SVG already exists in scene', sceneNumber);
         // Clear previous contents
