@@ -58,3 +58,35 @@ svg {
 .debug-border {
     border: 1px solid blue; 
 }
+
+/* Slider Handle */
+.handle {
+    fill: blue;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+/* Slider */
+#slider-container svg {
+    overflow: visible; /* Ensure the entire slider is visible */
+}
+
+/* Paths and Lines */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+/* Slider Labels */
+#start-label,
+#end-label {
+    font-size: 14px;
+    font-family: sans-serif;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 5px 0;
+}
