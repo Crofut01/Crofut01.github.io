@@ -115,7 +115,7 @@ function createChart(startDate, endDate, sceneNumber) {
     // set the dimensions of the svg
     const svgWidth = window.innerWidth;
     const svgHeight = window.innerHeight;
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 100, right: 100, bottom: 100, left: 100 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
     
@@ -186,7 +186,7 @@ function createChart(startDate, endDate, sceneNumber) {
     g.append('path')
         .datum(aggDataArr)
         .attr('fill', 'none')
-        .attr('stroke', 'yellow')
+        .attr('stroke', 'orange')
         .attr('stroke-width', 1.5)
         .attr('d', injuredLine);
 
@@ -203,7 +203,7 @@ function createChart(startDate, endDate, sceneNumber) {
 
     legend.append('rect')
         .attr('width', 150)
-        .attr('height', 60)
+        .attr('height', 80)
         .attr('fill', 'white')
         .attr('stroke', 'black');
 
@@ -217,7 +217,7 @@ function createChart(startDate, endDate, sceneNumber) {
         .attr('x', 10)
         .attr('y', 40)
         .text('People Injured')
-        .style('fill', 'yellow');
+        .style('fill', 'orange');
 
     legend.append('text')
         .attr('x', 10)
