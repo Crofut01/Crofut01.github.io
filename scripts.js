@@ -129,7 +129,7 @@ function createChart(startDate, endDate, sceneNumber) {
     // set the dimensions of the svg
     const svgWidth = window.innerWidth;
     const svgHeight = window.innerHeight;
-    const margin = { top: 100, right: 100, bottom: 100, left: 100 };
+    const margin = { top: 200, right: 100, bottom: 200, left: 100 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
     
@@ -268,12 +268,12 @@ function createDateSlider(minDate, maxDate) {
     // set width and height
     const svg = sliderContainer.append('svg')
         .attr('width', 600)
-        .attr('height', 100);
+        .attr('height', 200);
 
     // set margins and dims
     const margin = { top: 10, right: 30, bottom: 30, left: 30 };
     const width = 600 - margin.left - margin.right;
-    const height = 100 - margin.top - margin.bottom;
+    const height = 200 - margin.top - margin.bottom;
 
     // scale for slider
     const x = d3.scaleTime()
