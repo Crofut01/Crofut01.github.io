@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         maxDate = d3.max(data, d => d.date);
 
         // create the custom date slider
-        createDateSlider(minDate, maxDate);
+        createDateSlider(minDate, maxDate, createChart);
 
     } catch (error) {
         console.error('Error loading data', error);
