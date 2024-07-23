@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         scenes.forEach((scene, i) => {
             scene.style.display = i === index ? 'block' : 'none';
         });
+
+        // Call createChart for different scene numbers
+        drawCircle(currentScene+1);
     }
 
     // increment to move to the next scene on click of next button
@@ -36,7 +39,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentScene < scenes.length - 1) {
                 currentScene++;
                 showScene(currentScene);
-                createChart(currentScene+1);
             }
         });
     });
@@ -47,14 +49,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentScene > 0) {
                 currentScene--;
                 showScene(currentScene);
-                createChart(currentScene+1);
             }
         });
     });
 
     // Begin with first scene
     showScene(currentScene);
-    createChart(currentScene+1);
 });
 
 
@@ -69,7 +69,154 @@ Params:
     end: end date
     sceneNumber: scene number
 ---*/
-function createChart(sceneNumber) {
+function createChart(start, end, sceneNumber) {
+    console.log('drawChart called from dates: ', start, 'to ', end);
+
+    // filter for data in specified dates
+    const filteredData = data.filter(d => d.date >= start && d.date <= end);
+
+    // Aggregate data by date for counts of
+    // incidents, injured, and killed
+    const aggData = d3.rollup(
+        filteredData,
+        v => ({
+            count: v.length,
+            injured: d3.sum(v, d => d.n_injured),
+            killed: d3.sum(v, d => d.n_killed)
+        }),
+        d => d3.timeDay(d.date)
+    );
+
+    // convert agg data to an array
+    const aggDataArr = Array.from(aggData, ([date, values]) => ({ date, ...values }));
+
+    // sort time series data by date
+    aggDataArr.sort((a, b) => d3.ascending(a.date, b.date));
+
+    // set the dimensions of the svg
+    const svgWidth = window.innerWidth;
+    const svgHeight = window.innerHeight;
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+    
+    // select the existing scene svg to prevent overlap, add chart onto the current scene
+    const currentScene = document.querySelector('.scene:not([style*="display: none"])');
+    if (!currentScene) {
+        console.error('No visible scene found');
+        return;
+    }
+
+    let svg = d3.select(currentScene).select('svg');
+    if (svg.empty()) {
+        svg = d3.select(currentScene).append('svg')
+            .attr('width', svgWidth)
+            .attr('height', svgHeight);
+        console.log('SVG created and appended to scene', sceneNumber);
+    } else {
+        console.log('SVG already exists in scene', sceneNumber);
+        // Clear previous contents
+        svg.selectAll('*').remove();
+    }
+
+    // append new element to the svg
+    const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // create scales and axes, add to svg
+    const x = d3.scaleTime()
+        .domain(d3.extent(aggDataArr, d => d.date))
+        .range([0, width]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(aggDataArr, d => Math.max(d.count, d.injured, d.killed))])
+        .range([height, 0]);
+
+    const xAxis = d3.axisBottom(x);
+    const yAxis = d3.axisLeft(y);
+
+    g.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .call(xAxis);
+
+    g.append('g')
+        .call(yAxis);
+
+    // create three lines for time series chart
+    // incidents, injured, and killed
+    // append them to g
+    const incidentLine = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.count));
+
+    const injuredLine = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.injured));
+
+    const killedLine = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.killed));
+
+    g.append('path')
+        .datum(aggDataArr)
+        .attr('fill', 'none')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 1.5)
+        .attr('d', incidentLine);
+
+    g.append('path')
+        .datum(aggDataArr)
+        .attr('fill', 'none')
+        .attr('stroke', 'yellow')
+        .attr('stroke-width', 1.5)
+        .attr('d', injuredLine);
+
+    g.append('path')
+        .datum(aggDataArr)
+        .attr('fill', 'none')
+        .attr('stroke', 'red')
+        .attr('stroke-width', 1.5)
+        .attr('d', killedLine);
+
+    // Add legend
+    const legend = g.append('g')
+        .attr('transform', `translate(${width - 150},${margin.top})`);
+
+    legend.append('rect')
+        .attr('width', 150)
+        .attr('height', 60)
+        .attr('fill', 'white')
+        .attr('stroke', 'black');
+
+    legend.append('text')
+        .attr('x', 10)
+        .attr('y', 20)
+        .text('Incident Count')
+        .style('fill', 'steelblue');
+
+    legend.append('text')
+        .attr('x', 10)
+        .attr('y', 40)
+        .text('People Injured')
+        .style('fill', 'yellow');
+
+    legend.append('text')
+        .attr('x', 10)
+        .attr('y', 60)
+        .text('People Killed')
+        .style('fill', 'red');
+
+    // Debugging log of svg
+    console.log('SVG contents:', svg.node().innerHTML);
+
+}
+
+
+/*---
+FUNCTION
+Testing paramaeters and general architecture to build my createChart function
+---*/
+function drawCircle(sceneNumber) {
     console.log(`drawCircle called with sceneNumber: ${sceneNumber}`);
 
     // SVG dimensions
