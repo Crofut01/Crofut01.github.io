@@ -30,7 +30,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         // Call createChart for different scene numbers
-        drawCircle(currentScene+1);
+        switch (index) {
+            case 0:
+                createChart('2015-01-01', '2015-12-31', index);
+                break;
+            case 1:
+                createChart('2016-01-01', '2016-12-31', index);
+                break;
+            case 2:
+                createChart('2017-01-01', '2017-12-31', index);
+                break;
+            default:
+                console.log('Scene', index, 'does not require a chart.');
+        }
     }
 
     // increment to move to the next scene on click of next button
