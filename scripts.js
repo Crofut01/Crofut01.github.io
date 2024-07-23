@@ -1,3 +1,6 @@
+// data as global var
+let data = [];
+
 // Events to complete on startup
 document.addEventListener('DOMContentLoaded', async () => {
     // Check if the data loaded properly and display the results
@@ -77,12 +80,16 @@ FUNCTION
 Draws a chart according to the parameters.
 
 Params:
-    start: start date
-    end: end date
+    startDate: start date
+    endDate: end date
     sceneNumber: scene number
 ---*/
-function createChart(start, end, sceneNumber) {
+function createChart(startDate, endDate, sceneNumber) {
     console.log('drawChart called from dates: ', start, 'to ', end);
+
+    // convert start and end to Date vars
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
     // filter for data in specified dates
     const filteredData = data.filter(d => d.date >= start && d.date <= end);
