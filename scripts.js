@@ -3,6 +3,7 @@
 let data = [];
 let minDate, maxDate;
 let firstUpdate = true;
+let slideFirst, slideLast;
 
 // Events to complete on startup
 document.addEventListener('DOMContentLoaded', async () => {
@@ -26,6 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         //minDate = d3.min(data, d => d.date);
         minDate = new Date('2014-01-01');
         maxDate = d3.max(data, d => d.date);
+        slideFirst = minDate;
+        slideLast = maxDate;
         console.log('data ranging from: ', minDate, 'to: ', maxDate);
 
     } catch (error) {
@@ -264,14 +267,14 @@ function createChart(startDate, endDate, sceneNumber) {
          const handle1 = sliderG.append('circle')
             .attr('class', 'handle')
             .attr('r', 8)
-            .attr('cx', xSlider(minDate))
+            .attr('cx', xSlider(slideFirst))
             .attr('cy', 30) // Adjust position
             .call(d3.drag().on('drag', dragged1));
 
         const handle2 = sliderG.append('circle')
             .attr('class', 'handle')
             .attr('r', 8)
-            .attr('cx', xSlider(maxDate))
+            .attr('cx', xSlider(slideLast))
             .attr('cy', 30) // Adjust position
             .call(d3.drag().on('drag', dragged2));
 
@@ -286,6 +289,9 @@ function createChart(startDate, endDate, sceneNumber) {
             const endDate = xSlider.invert(handle2.attr('cx'));
             startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
             endLabel.textContent = `End Date: ${endDate.toDateString()}`;
+
+            slideFirst = startDate;
+            slideLast = endDate;
 
             createChart(startDate, endDate, 4);
         }
