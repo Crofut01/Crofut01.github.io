@@ -53,13 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 createChart('2017-01-01', '2017-12-31', index);
                 break;
             case 3:
-                let sliderValues = d3.select('#slider-container').datum();
-                if (!sliderValues || sliderValues.length !== 2) {
-                    // Initialize with default min and max dates if none given
-                    sliderValues = [minDate, maxDate];
-                    d3.select('#slider-container').datum(sliderValues);
-                }
-                createChart(sliderValues[0], sliderValues[1], 4);
+                createChart(minDate, maxDate, 4);
                 break;
             default:
                 console.log('Scene', index, 'does not require a chart.');
