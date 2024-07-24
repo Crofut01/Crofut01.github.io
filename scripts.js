@@ -286,7 +286,6 @@ function createChart(startDate, endDate, sceneNumber) {
             const endDate = xSlider.invert(handle2.attr('cx'));
             startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
             endLabel.textContent = `End Date: ${endDate.toDateString()}`;
-            d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
 
             createChart(startDate, endDate, 4);
         }
