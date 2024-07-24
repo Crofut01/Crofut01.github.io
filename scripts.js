@@ -2,7 +2,7 @@
 // minDate and maxDate as global vars
 let data = [];
 let minDate, maxDate;
-let firstUpdate = false;
+let firstUpdate = true;
 
 // Events to complete on startup
 document.addEventListener('DOMContentLoaded', async () => {
@@ -288,9 +288,7 @@ function createChart(startDate, endDate, sceneNumber) {
             endLabel.textContent = `End Date: ${endDate.toDateString()}`;
             d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
 
-            if (!firstUpdate) {
-                createChart(startDate, endDate, 4);
-            }
+            createChart(startDate, endDate, 4);
         }
 
         // Functions to handle updates from slider drag
@@ -308,10 +306,11 @@ function createChart(startDate, endDate, sceneNumber) {
 
         // Initial labels update
         console.log('date slider created');
-        updateLabels();
+        if (firstUpdate) {
+            firstUpdate = false;
+            updateLabels();
+        }
 
-        // Reset flag after update
-        firstUpdate = false;
     }
 
 }
