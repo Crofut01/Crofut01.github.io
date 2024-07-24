@@ -243,7 +243,7 @@ function createChart(startDate, endDate, sceneNumber) {
     console.log('chart drawn');
 
     // Create date slider for scene 4
-    if (sceneNumber == 4) {
+    if (sceneNumber == 4 && firstUpdate) {
 
         // Create and append the slider elements within the same SVG
         const sliderG = svg.append('g')
