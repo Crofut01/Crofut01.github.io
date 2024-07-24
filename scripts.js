@@ -284,6 +284,8 @@ function createDateSlider(minDate, maxDate) {
         return;
     }
 
+    const svgWidth = window.innerWidth;
+    const svgHeight = window.innerHeight;
     let svg = d3.select(currentScene).select('svg');
     if (svg.empty()) {
         svg = d3.select(currentScene).append('svg')
