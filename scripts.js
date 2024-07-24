@@ -53,9 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 createChart('2017-01-01', '2017-12-31', index);
                 break;
             case 3:
-                // create the custom date slider
-                createDateSlider(minDate, maxDate);
-
                 let sliderValues = d3.select('#slider-container').datum();
                 if (!sliderValues || sliderValues.length !== 2) {
                     // Initialize with default min and max dates if none given
@@ -153,11 +150,6 @@ function createChart(startDate, endDate, sceneNumber) {
             .attr('width', svgWidth)
             .attr('height', svgHeight);
         console.log('SVG created and appended to scene', sceneNumber);
-    } else if (sceneNumber == 4) {
-        console.log('SVG already exists in scene', sceneNumber);
-        console.log('slider not deleted')
-        // Clear previous contents, but not the slider
-        svg.selectAll('*:not(.slider)').remove();
     } else {
         console.log('SVG already exists in scene', sceneNumber);
         // Clear previous contents
@@ -255,106 +247,69 @@ function createChart(startDate, endDate, sceneNumber) {
     //console.log('SVG contents:', svg.node().innerHTML);
     console.log('chart drawn');
 
-}
+    // Create date slider for scene 4
+    if (sceneNumber == 4) {
+        // Create and append the slider elements within the same SVG
+        const sliderG = svg.append('g')
+            .attr('class', 'slider')
+            .attr('transform', `translate(${margin.left},${svgHeight - margin.bottom - 50})`); // Adjust position
 
+        // Create scale for the slider
+        const xSlider = d3.scaleTime()
+            .domain([minDate, maxDate])
+            .range([0, width]);
 
-/*---
-FUNCTION
+        // Create and append the axis for the slider
+        sliderG.append('g')
+            .attr('transform', `translate(0,${30})`) // Position the axis
+            .call(d3.axisBottom(xSlider));
 
-Creates a custom date slider
+         // Initial values for the handles
+         const handle1 = sliderG.append('circle')
+            .attr('class', 'handle')
+            .attr('r', 8)
+            .attr('cx', xSlider(minDate))
+            .attr('cy', 30) // Adjust position
+            .call(d3.drag().on('drag', dragged1));
 
-Params:
-    minDate: minimum date on slider, first date on data
-    maxDate: maximum date on slider, last date on data
----*/
-function createDateSlider(minDate, maxDate) {
-    console.log('Date slider being created');
+        const handle2 = sliderG.append('circle')
+            .attr('class', 'handle')
+            .attr('r', 8)
+            .attr('cx', xSlider(maxDate))
+            .attr('cy', 30) // Adjust position
+            .call(d3.drag().on('drag', dragged2));
 
-    // Select the current visible scene
-    const currentScene = document.querySelector('.scene:not([style*="display: none"])');
-    if (!currentScene) {
-        console.error('No visible scene found');
-        return;
+        // Retrieve label elements from HTML
+        const startLabel = document.getElementById('start-label');
+        const endLabel = document.getElementById('end-label');
+
+        // Function to update start and end labels, updates start and end dates to filter by
+        function updateLabels() {
+            console.log('Labels updated');
+            const startDate = xSlider.invert(handle1.attr('cx'));
+            const endDate = xSlider.invert(handle2.attr('cx'));
+            startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
+            endLabel.textContent = `End Date: ${endDate.toDateString()}`;
+            d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
+            createChart(startDate, endDate, 4);  // Update chart
+        }
+
+        // Functions to handle updates from slider drag
+        function dragged1(event) {
+            const newX = Math.max(0, Math.min(width, event.x));
+            handle1.attr('cx', newX);
+            updateLabels();
+        }
+
+        function dragged2(event) {
+            const newX = Math.max(0, Math.min(width, event.x));
+            handle2.attr('cx', newX);
+            updateLabels();
+        }
+
+        // Initial labels update
+        console.log('date slider created');
+        updateLabels();
     }
-    console.log('Current Scene:', currentScene);
 
-    /// Check if the slider already exists, return if it does
-    if (d3.select(currentScene).select('#slider-container svg').node()) {
-        console.log('Slider already exists. Skipping creation.');
-        return;
-    }
-
-    const svgWidth = window.innerWidth;
-    const svgHeight = window.innerHeight;
-    let svg = d3.select(currentScene).select('svg');
-    if (svg.empty()) {
-        svg = d3.select(currentScene).append('svg')
-            .attr('width', svgWidth)
-            .attr('height', svgHeight);
-        console.log('SVG created for interactive chart');
-    } else {
-        svg.selectAll('*:not(.slider)').remove();
-    }
-
-   // Create and append the slider components
-   const margin = { top: 10, right: 30, bottom: 30, left: 30 };
-   const width = svgWidth - margin.left - margin.right;
-   const height = svgHeight - margin.top - margin.bottom;
-
-   const g = svg.append('g')
-       .attr('transform', `translate(${margin.left},${margin.top})`);
-
-   const x = d3.scaleTime()
-       .domain([minDate, maxDate])
-       .range([0, width]);
-
-   g.append('g')
-       .attr('transform', `translate(0,${height})`)
-       .call(d3.axisBottom(x));
-
-   // Create and append the handles
-   const handle1 = g.append('circle')
-       .attr('class', 'handle')
-       .attr('r', 8)
-       .attr('cx', x(minDate))
-       .attr('cy', height / 2)
-       .call(d3.drag().on('drag', dragged1));
-
-   const handle2 = g.append('circle')
-       .attr('class', 'handle')
-       .attr('r', 8)
-       .attr('cx', x(maxDate))
-       .attr('cy', height / 2)
-       .call(d3.drag().on('drag', dragged2));
-
-   // Retrieve label elements from HTML
-   const startLabel = document.getElementById('start-label');
-   const endLabel = document.getElementById('end-label');
-
-   // Function to update start and end labels, updates start and end dates to filter by
-   function updateLabels() {
-       console.log('Labels updated');
-       const startDate = x.invert(handle1.attr('cx'));
-       const endDate = x.invert(handle2.attr('cx'));
-       startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
-       endLabel.textContent = `End Date: ${endDate.toDateString()}`;
-       d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
-       createChart(startDate, endDate, 4);  // Update chart
-   }
-
-   // Functions to handle updates from slider drag
-   function dragged1(event) {
-       const newX = Math.max(0, Math.min(width, event.x));
-       handle1.attr('cx', newX);
-       updateLabels();
-   }
-
-   function dragged2(event) {
-       const newX = Math.max(0, Math.min(width, event.x));
-       handle2.attr('cx', newX);
-       updateLabels();
-   }
-
-   // Initial labels update
-   updateLabels();
 }
