@@ -276,15 +276,15 @@ function createDateSlider(minDate, maxDate) {
         return;
     }
 
-    // Remove any existing slider SVG to prevent duplicates
-    d3.select(currentScene).select('#slider-container svg').remove();
-
-    // Create slider container within the current scene
+    // Check if slider container exists
     const sliderContainer = d3.select(currentScene).select('#slider-container');
     if (sliderContainer.empty()) {
         console.error('Slider container not found');
         return;
     }
+
+    // Remove any existing slider SVG to prevent duplicates
+    sliderContainer.select('svg').remove();
 
     // Set width and height for the SVG
     const svgWidth = 600;
