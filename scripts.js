@@ -31,9 +31,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error loading data', error);
     }
 
-    // create the custom date slider
-    createDateSlider(minDate, maxDate);
-
     // Handle scene navigation
     const scenes = document.querySelectorAll('.scene');
     let currentScene = 0;
@@ -56,6 +53,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 createChart('2017-01-01', '2017-12-31', index);
                 break;
             case 3:
+                // create the custom date slider
+                createDateSlider(minDate, maxDate);
+                
                 let sliderValues = d3.select('#slider-container').datum();
                 if (!sliderValues || sliderValues.length !== 2) {
                     // Initialize with default min and max dates if none given
@@ -277,9 +277,11 @@ function createDateSlider(minDate, maxDate) {
     }
     console.log('Current Scene:', currentScene);
 
-    // Check if slider container exists
-    const sliderContainer = d3.select(currentScene).select('#slider-container');
-    console.log('Slider Container:', sliderContainer.empty());
+    /// Check if the slider already exists, return if it does
+    if (d3.select(currentScene).select('#slider-container svg').node()) {
+        console.log('Slider already exists. Skipping creation.');
+        return;
+    }
 
     // Remove any existing slider SVG to prevent duplicates
     sliderContainer.select('svg').remove();
