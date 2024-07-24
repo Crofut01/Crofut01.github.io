@@ -3,7 +3,6 @@
 let data = [];
 let minDate, maxDate;
 let firstUpdate = true;
-let sliderStartDate, sliderEndDate;
 
 // Events to complete on startup
 document.addEventListener('DOMContentLoaded', async () => {
@@ -27,8 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         //minDate = d3.min(data, d => d.date);
         minDate = new Date('2014-01-01');
         maxDate = d3.max(data, d => d.date);
-        sliderStartDate = minDate;
-        sliderEndDate = maxDate;
         console.log('data ranging from: ', minDate, 'to: ', maxDate);
 
     } catch (error) {
@@ -264,29 +261,19 @@ function createChart(startDate, endDate, sceneNumber) {
             .call(d3.axisBottom(xSlider));
 
          // Initial values for the handles
-         const handle1 = sliderG.select('.handle1');
-        if (handle1.empty()) {
-            sliderG.append('circle')
-                .attr('class', 'handle handle1')
-                .attr('r', 8)
-                .attr('cx', xSlider(minDate))
-                .attr('cy', 30) // Adjust position
-                .call(d3.drag().on('drag', dragged1));
-        } else {
-            handle1.attr('cx', xSlider(sliderStartDate || minDate));
-        }
+         const handle1 = sliderG.append('circle')
+            .attr('class', 'handle')
+            .attr('r', 8)
+            .attr('cx', xSlider(minDate))
+            .attr('cy', 30) // Adjust position
+            .call(d3.drag().on('drag', dragged1));
 
-        const handle2 = sliderG.select('.handle2');
-        if (handle2.empty()) {
-            sliderG.append('circle')
-                .attr('class', 'handle handle2')
-                .attr('r', 8)
-                .attr('cx', xSlider(maxDate))
-                .attr('cy', 30) // Adjust position
-                .call(d3.drag().on('drag', dragged2));
-        } else {
-            handle2.attr('cx', xSlider(sliderEndDate || maxDate));
-        }
+        const handle2 = sliderG.append('circle')
+            .attr('class', 'handle')
+            .attr('r', 8)
+            .attr('cx', xSlider(maxDate))
+            .attr('cy', 30) // Adjust position
+            .call(d3.drag().on('drag', dragged2));
 
         // Retrieve label elements from HTML
         const startLabel = document.getElementById('start-label');
@@ -299,8 +286,8 @@ function createChart(startDate, endDate, sceneNumber) {
             const endDate = xSlider.invert(handle2.attr('cx'));
             startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
             endLabel.textContent = `End Date: ${endDate.toDateString()}`;
-            sliderStartDate = startDate;
-            sliderEndDate = endDate;
+            d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
+
             createChart(startDate, endDate, 4);
         }
 
