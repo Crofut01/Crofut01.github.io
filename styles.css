@@ -66,9 +66,19 @@ svg {
     stroke-width: 2px;
 }
 
-/* Slider */
+/* Slider SVG*/
 #slider-container svg {
     overflow: visible; /* Ensure the entire slider is visible */
+    width: 100%;
+    height: 100%;
+}
+
+/* Slider */
+#slider-container {
+    position: relative;
+    padding-bottom: 50px;
+    height: 100px; /* Ensure there is enough height for the slider */
+    border: 1px solid red; /* Debug border to visualize container */
 }
 
 /* Paths and Lines */
