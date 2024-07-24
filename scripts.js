@@ -23,16 +23,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Store min and max date for slider
         //minDate = d3.min(data, d => d.date);
-        const minDate = new Date('2014-01-01');
+        minDate = new Date('2014-01-01');
         maxDate = d3.max(data, d => d.date);
         console.log('data ranging from: ', minDate, 'to: ', maxDate);
-
-        // create the custom date slider
-        createDateSlider(minDate, maxDate);
 
     } catch (error) {
         console.error('Error loading data', error);
     }
+
+    // create the custom date slider
+    createDateSlider(minDate, maxDate);
 
     // Handle scene navigation
     const scenes = document.querySelectorAll('.scene');
@@ -275,13 +275,11 @@ function createDateSlider(minDate, maxDate) {
         console.error('No visible scene found');
         return;
     }
+    console.log('Current Scene:', currentScene);
 
     // Check if slider container exists
     const sliderContainer = d3.select(currentScene).select('#slider-container');
-    if (sliderContainer.empty()) {
-        console.error('Slider container not found');
-        return;
-    }
+    console.log('Slider Container:', sliderContainer.empty());
 
     // Remove any existing slider SVG to prevent duplicates
     sliderContainer.select('svg').remove();
