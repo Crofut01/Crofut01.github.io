@@ -325,6 +325,12 @@ function createDateSlider(minDate, maxDate) {
         .attr('cy', height / 2)
         .call(d3.drag().on('drag', dragged2));
 
+    if (!handle1.empty() && !handle2.empty()) {
+        console.log('Handles created successfully');
+    } else {
+        console.error('Failed to create handles');
+    }
+
     // Retrieve label elements from HTML
     const startLabel = document.getElementById('start-label');
     const endLabel = document.getElementById('end-label');
@@ -335,13 +341,41 @@ function createDateSlider(minDate, maxDate) {
 
     // Function to update start and end labels, updates start and end dates to filter by
     function updateLabels() {
-        if (!handle1 || !handle2) {
-            console.error('Handles not found');
+        console.log('Updating labels');
+    
+        const handle1Cx = handle1.attr('cx');
+        const handle2Cx = handle2.attr('cx');
+        
+        console.log('Handle1 cx:', handle1Cx);
+        console.log('Handle2 cx:', handle2Cx);
+    
+        if (handle1Cx === null || handle2Cx === null) {
+            console.error('Handle cx attribute is null');
             return;
         }
-        console.log('Labels updated');
-        const startDate = x.invert(handle1.attr('cx'));
-        const endDate = x.invert(handle2.attr('cx'));
+    
+        const handle1CxNumber = parseFloat(handle1Cx);
+        const handle2CxNumber = parseFloat(handle2Cx);
+    
+        console.log('Handle1 cx (number):', handle1CxNumber);
+        console.log('Handle2 cx (number):', handle2CxNumber);
+    
+        if (isNaN(handle1CxNumber) || isNaN(handle2CxNumber)) {
+            console.error('Handle cx attribute is not a number');
+            return;
+        }
+    
+        const startDate = x.invert(handle1CxNumber);
+        const endDate = x.invert(handle2CxNumber);
+    
+        console.log('Start date:', startDate);
+        console.log('End date:', endDate);
+    
+        if (isNaN(startDate) || isNaN(endDate)) {
+            console.error('Invalid date values from x.invert');
+            return;
+        }
+    
         startLabel.textContent = `Start Date: ${startDate.toDateString()}`;
         endLabel.textContent = `End Date: ${endDate.toDateString()}`;
         d3.select('#slider-container').datum([startDate, endDate]);  // Save current slider values
