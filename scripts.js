@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             case 3:
                 // create the custom date slider
                 createDateSlider(minDate, maxDate);
-                
+
                 let sliderValues = d3.select('#slider-container').datum();
                 if (!sliderValues || sliderValues.length !== 2) {
                     // Initialize with default min and max dates if none given
@@ -252,7 +252,7 @@ function createChart(startDate, endDate, sceneNumber) {
         .style('fill', 'red');
 
     // Debugging log of svg
-    console.log('SVG contents:', svg.node().innerHTML);
+    //console.log('SVG contents:', svg.node().innerHTML);
 
 }
 
@@ -283,8 +283,8 @@ function createDateSlider(minDate, maxDate) {
         return;
     }
 
-    // Remove any existing slider SVG to prevent duplicates
-    sliderContainer.select('svg').remove();
+    // Create slider container within the current scene
+    const sliderContainer = d3.select(currentScene).select('#slider-container');
 
     // Set width and height for the SVG
     const svgWidth = 600;
