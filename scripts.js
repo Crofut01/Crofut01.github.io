@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log(data);
         
         // Store min and max date for slider
-        minDate = d3.min(data, d => d.date);
+        //minDate = d3.min(data, d => d.date);
+        const minDate = new Date('2014-01-01');
         maxDate = d3.max(data, d => d.date);
         console.log('data ranging from: ', minDate, 'to: ', maxDate);
 
@@ -327,9 +328,17 @@ function createDateSlider(minDate, maxDate) {
     // Retrieve label elements from HTML
     const startLabel = document.getElementById('start-label');
     const endLabel = document.getElementById('end-label');
+    if (!startLabel || !endLabel) {
+        console.error('Start or End label element not found');
+        return;
+    }
 
     // Function to update start and end labels, updates start and end dates to filter by
     function updateLabels() {
+        if (!handle1 || !handle2) {
+            console.error('Handles not found');
+            return;
+        }
         console.log('Labels updated');
         const startDate = x.invert(handle1.attr('cx'));
         const endDate = x.invert(handle2.attr('cx'));
