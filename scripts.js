@@ -299,9 +299,8 @@ function createChart(startDate, endDate, sceneNumber) {
         .style('font-weight', 'bold')
         .text(`Total Incidents: ${totalIncidents}`);
 
-    // Debugging log of svg
-    //console.log('SVG contents:', svg.node().innerHTML);
-    console.log('chart drawn');
+    // Scene 1 annotation
+    // July 4th trends as high incident count
 
     // Create date slider for scene 4
     if (sceneNumber == 4) {
@@ -375,5 +374,9 @@ function createChart(startDate, endDate, sceneNumber) {
         }
 
     }
+
+    // Debugging log of svg
+    //console.log('SVG contents:', svg.node().innerHTML);
+    console.log('chart drawn');
 
 }
