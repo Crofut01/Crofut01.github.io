@@ -302,7 +302,8 @@ function createChart(startDate, endDate, sceneNumber) {
     // Scene 1 annotation
     // July 4th trends as high incident count
     const scene1AnnDate = new Date('2015-07-04');
-    const scene1AnnData = aggDataArr.find(d => d.date.getTime() === scene1AnnDate.getTime());
+    const scene1AnnDateString = scene1AnnDate.toISOString().split('T')[0];
+    const scene1AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene1AnnDateString);
 
     if (scene1AnnData) {
         // mark data point with circle
