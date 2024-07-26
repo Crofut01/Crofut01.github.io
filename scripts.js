@@ -301,6 +301,28 @@ function createChart(startDate, endDate, sceneNumber) {
 
     // Scene 1 annotation
     // July 4th trends as high incident count
+    const scene1AnnDate = new Date('2015-07-04');
+    const scene1AnnData = aggDataArr.find(d => d.date.getTime() === annotationDate.getTime());
+
+    if (annotationData) {
+        // mark data point with circle
+        g.append('circle')
+        .attr('cx', x(annotationDate))
+        .attr('cy', y(annotationData.count))
+        .attr('r', 5)
+        .style('fill', 'purple');
+
+        g.append('text')
+        .attr('x', x(annotationDate) + 55) // Adjust as needed
+        .attr('y', y(annotationData.count) - 35) // Adjust as needed
+        .attr('text-anchor', 'start')
+        .style('font-size', '12px')
+        .style('fill', 'black')
+        .style('font-weight', 'bold')
+        .text('July 4th tends to have more incidents every year');
+    } else {
+        console.error('no point found on scene1');
+    }
 
     // Create date slider for scene 4
     if (sceneNumber == 4) {
