@@ -215,7 +215,7 @@ function createChart(startDate, endDate, sceneNumber) {
 
     // Add legend
     const legend = g.append('g')
-        .attr('transform', `translate(${width - 150},${margin.top})`);
+        .attr('transform', `translate(${margin.left},${-margin.top + 50})`);
 
     legend.append('rect')
         .attr('width', 150)
@@ -240,6 +240,18 @@ function createChart(startDate, endDate, sceneNumber) {
         .attr('y', 60)
         .text('People Killed')
         .style('fill', 'red');
+
+    // Calculate the total number of incidents
+    const totalIncidents = d3.sum(filteredData, d => d.count);
+
+    // Add the annotation for the total number of incidents
+    g.append('text')
+        .attr('x', width - 200) // Positioning the annotation
+        .attr('y', margin.top - 40)
+        .attr('text-anchor', 'end')
+        .style('font-size', '16px')
+        .style('fill', 'black')
+        .text(`Total Incidents: ${totalIncidents}`);
 
     // Debugging log of svg
     //console.log('SVG contents:', svg.node().innerHTML);
