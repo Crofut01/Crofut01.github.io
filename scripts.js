@@ -5,7 +5,11 @@ let minDate, maxDate;
 let firstUpdate = true;
 let slideFirst, slideLast;
 
-// Events to complete on startup
+/*===
+EVENT LISTENER
+
+Actions to complete on startup, after the DOM content has been loaded
+---*/
 document.addEventListener('DOMContentLoaded', async () => {
 
     // Check if the data loaded properly and display the results
@@ -214,8 +218,9 @@ function createChart(startDate, endDate, sceneNumber) {
         .attr('d', killedLine);
 
     // Add legend
+    // TODO: format legend to the right
     const legend = g.append('g')
-        .attr('transform', `translate(${margin.left},${-margin.top + 50})`);
+        .attr('transform', `translate(${margin.right},${-margin.top + 50})`);
 
     legend.append('rect')
         .attr('width', 150)
@@ -241,10 +246,52 @@ function createChart(startDate, endDate, sceneNumber) {
         .text('People Killed')
         .style('fill', 'red');
 
+    // Add hover tooltip as div
+    const tooltip = d3.select(currentScene).append('div')
+        .attr('class', 'tooltip')
+        .style('position', 'absolute')
+        .style('opacity', 0)
+        .style('background', '#f9f9f9')
+        .style('border', '1px solid #d3d3d3')
+        .style('padding', '5px')
+        .style('pointer-events', 'none');
+
+    // Overlay rect for tooltip
+    svg.append('rect')
+        .attr('class', 'overlay')
+        .attr('width', width)
+        .attr('height', height)
+        .style('fill', 'none')
+        .style('pointer-events', 'all')
+        .attr('transform', `translate(${margin.left},${margin.top})`)
+        .on('mouseover', function() { tooltip.style('opacity', 1); })
+        .on('mouseout', function() { tooltip.style('opacity', 0); })
+        .on('mousemove', function(event) {
+            const mouse = d3.pointer(event);
+            const mouseDate = x.invert(mouse[0]);
+            
+            const bisect = d3.bisector(d => d.date).left;
+            const index = bisect(aggDataArr, mouseDate, 1);
+            const d0 = aggDataArr[index - 1];
+            const d1 = aggDataArr[index];
+            const d = mouseDate - d0.date > d1.date - mouseDate ? d1 : d0;
+
+            tooltip.html(`
+                <strong>Date:</strong> ${d.date.toDateString()}<br>
+                <strong>Incidents:</strong> ${d.count}<br>
+                <strong>Injured:</strong> ${d.injured}<br>
+                <strong>Killed:</strong> ${d.killed}
+            `)
+            .style('left', (event.pageX + 15) + 'px')
+            .style('top', (event.pageY - 28) + 'px');
+        });
+
     // Calculate the total number of incidents
+    // TODO: fix aggregation to not show zero
     const totalIncidents = d3.sum(filteredData, d => d.count);
 
     // Add the annotation for the total number of incidents
+    // TODO: fix formatting of text to not overlay with chart
     g.append('text')
         .attr('x', width - 200) // Positioning the annotation
         .attr('y', margin.top - 40)
