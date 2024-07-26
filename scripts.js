@@ -291,8 +291,8 @@ function createChart(startDate, endDate, sceneNumber) {
     // Add the annotation for the total number of incidents
     // TODO: fix formatting of text to not overlay with chart
     g.append('text')
-        .attr('x', width - 200) // Positioning the annotation
-        .attr('y', margin.top - 150)
+        .attr('x', width - 200)
+        .attr('y', margin.top - 200)
         .attr('text-anchor', 'end')
         .style('font-size', '16px')
         .style('fill', 'black')
@@ -308,7 +308,7 @@ function createChart(startDate, endDate, sceneNumber) {
         // Create and append the slider elements within the same SVG
         const sliderG = svg.append('g')
             .attr('class', 'slider')
-            .attr('transform', `translate(${margin.left},${svgHeight - margin.bottom + 50})`); // TODO: Adjust position
+            .attr('transform', `translate(${margin.left},${svgHeight - margin.bottom + 50})`); // Adjust position of slider, add more to lower
 
         // Create scale for the slider
         const xSlider = d3.scaleTime()
