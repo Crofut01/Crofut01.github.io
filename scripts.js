@@ -292,10 +292,11 @@ function createChart(startDate, endDate, sceneNumber) {
     // TODO: fix formatting of text to not overlay with chart
     g.append('text')
         .attr('x', width - 200)
-        .attr('y', margin.top - 200)
+        .attr('y', margin.top - 250) // decrease to raise number position
         .attr('text-anchor', 'end')
-        .style('font-size', '16px')
+        .style('font-size', '24px')
         .style('fill', 'black')
+        .style('font-weight', 'bold')
         .text(`Total Incidents: ${totalIncidents}`);
 
     // Debugging log of svg
