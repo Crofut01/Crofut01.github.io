@@ -339,7 +339,7 @@ function createChart(startDate, endDate, sceneNumber) {
 
         g.append('text')
         .attr('x', x(scene2AnnDate) - 45) // Adjust as needed, -left +right
-        .attr('y', y(scene2AnnData.count) - 65) // Adjust as needed, -up +down
+        .attr('y', y(scene2AnnData.count) - 85) // Adjust as needed, -up +down
         .attr('text-anchor', 'start')
         .style('font-size', '12px')
         .style('fill', 'black')
@@ -348,7 +348,7 @@ function createChart(startDate, endDate, sceneNumber) {
     }
 
     // Scene 3 annotation
-    // Oct 1 Vegas shooting TODO: add PNG?
+    // Oct 1 Vegas shooting TODO: enter injured and killed data for event below
     const scene3AnnDate = new Date('2017-10-01');
     const scene3AnnDateString = scene3AnnDate.toISOString().split('T')[0];
     const scene3AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene3AnnDateString);
@@ -362,8 +362,8 @@ function createChart(startDate, endDate, sceneNumber) {
         .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene3AnnDate) - 100) // Adjust as needed, -left +right
-        .attr('y', y(scene3AnnData.count) - 80) // Adjust as needed, -up +down
+        .attr('x', x(scene3AnnDate) - 130) // Adjust as needed, -left +right
+        .attr('y', y(scene3AnnData.injured) + 50) // Adjust as needed, -up +down
         .attr('text-anchor', 'start')
         .style('font-size', '12px')
         .style('fill', 'black')
