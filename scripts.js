@@ -289,7 +289,6 @@ function createChart(startDate, endDate, sceneNumber) {
     const totalIncidents = filteredData.length;
 
     // Add the annotation for the total number of incidents
-    // TODO: fix formatting of text to not overlay with chart
     g.append('text')
         .attr('x', width - 200)
         .attr('y', margin.top - 250) // decrease to raise number position
@@ -305,7 +304,7 @@ function createChart(startDate, endDate, sceneNumber) {
     const scene1AnnDateString = scene1AnnDate.toISOString().split('T')[0];
     const scene1AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene1AnnDateString);
 
-    if (scene1AnnData) {
+    if (sceneNumber==1 && scene1AnnData) {
         // mark data point with circle
         g.append('circle')
         .attr('cx', x(scene1AnnDate))
@@ -314,15 +313,13 @@ function createChart(startDate, endDate, sceneNumber) {
         .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene1AnnDate) + 55) // Adjust as needed
-        .attr('y', y(scene1AnnData.count) - 35) // Adjust as needed
+        .attr('x', x(scene1AnnDate) + 30) // Adjust as needed, -left +right
+        .attr('y', y(scene1AnnData.count) - 30) // Adjust as needed, -up +down
         .attr('text-anchor', 'start')
         .style('font-size', '12px')
         .style('fill', 'black')
         .style('font-weight', 'bold')
         .text('July 4th tends to have more incidents every year');
-    } else {
-        console.error('no point found on scene1');
     }
 
     // Scene 2 annotation
@@ -331,7 +328,7 @@ function createChart(startDate, endDate, sceneNumber) {
     const scene2AnnDateString = scene2AnnDate.toISOString().split('T')[0];
     const scene2AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene2AnnDateString);
 
-    if (scene2AnnData) {
+    if (sceneNumber==2 && scene2AnnData) {
         // mark data point with circle
         g.append('circle')
         .attr('cx', x(scene2AnnDate))
@@ -340,41 +337,37 @@ function createChart(startDate, endDate, sceneNumber) {
         .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene2AnnDate) + 55) // Adjust as needed
-        .attr('y', y(scene2AnnData.count) - 35) // Adjust as needed
+        .attr('x', x(scene2AnnDate) - 45) // Adjust as needed, -left +right
+        .attr('y', y(scene2AnnData.count) - 65) // Adjust as needed, -up +down
         .attr('text-anchor', 'start')
         .style('font-size', '12px')
         .style('fill', 'black')
         .style('font-weight', 'bold')
         .text('Orlando Shooting');
-    } else {
-        console.error('no point found on scene2');
     }
 
     // Scene 3 annotation
-    // Oct 1 Vegas shooting
+    // Oct 1 Vegas shooting TODO: add PNG?
     const scene3AnnDate = new Date('2017-10-01');
     const scene3AnnDateString = scene3AnnDate.toISOString().split('T')[0];
     const scene3AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene3AnnDateString);
 
-    if (scene3AnnData) {
+    if (sceneNumber==3 && scene3AnnData) {
         // mark data point with circle
         g.append('circle')
         .attr('cx', x(scene3AnnDate))
-        .attr('cy', y(scene3AnnData.count))
+        .attr('cy', y(scene3AnnData.injured))
         .attr('r', 5)
         .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene3AnnDate) + 55) // Adjust as needed
-        .attr('y', y(scene3AnnData.count) - 35) // Adjust as needed
+        .attr('x', x(scene3AnnDate) - 100) // Adjust as needed, -left +right
+        .attr('y', y(scene3AnnData.count) - 80) // Adjust as needed, -up +down
         .attr('text-anchor', 'start')
         .style('font-size', '12px')
         .style('fill', 'black')
         .style('font-weight', 'bold')
-        .text('July 4th tends to have more incidents every year');
-    } else {
-        console.error('no point found on scene3');
+        .text('Vegas Shooting');
     }
 
     // Create date slider for scene 4
