@@ -308,19 +308,19 @@ function createChart(startDate, endDate, sceneNumber) {
         console.log('Annotation 1 added');
         // mark data point with circle
         g.append('circle')
-        .attr('cx', x(scene1AnnDate))
-        .attr('cy', y(scene1AnnData.count))
-        .attr('r', 5)
-        .style('fill', 'purple');
+            .attr('cx', x(scene1AnnDate))
+            .attr('cy', y(scene1AnnData.count))
+            .attr('r', 5)
+            .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene1AnnDate) + 30) // Adjust as needed, -left +right
-        .attr('y', y(scene1AnnData.count) - 30) // Adjust as needed, -up +down
-        .attr('text-anchor', 'start')
-        .style('font-size', '12px')
-        .style('fill', 'black')
-        .style('font-weight', 'bold')
-        .text('July 4th tends to have more incidents every year');
+            .attr('x', x(scene1AnnDate) + 30) // Adjust as needed, -left +right
+            .attr('y', y(scene1AnnData.count) - 30) // Adjust as needed, -up +down
+            .attr('text-anchor', 'start')
+            .style('font-size', '12px')
+            .style('fill', 'black')
+            .style('font-weight', 'bold')
+            .text('July 4th tends to have more incidents every year');
     }
 
     // Scene 2 annotation
@@ -332,19 +332,34 @@ function createChart(startDate, endDate, sceneNumber) {
     if (sceneNumber==2 && scene2AnnData) {
         // mark data point with circle
         g.append('circle')
-        .attr('cx', x(scene2AnnDate))
-        .attr('cy', y(scene2AnnData.count))
-        .attr('r', 5)
-        .style('fill', 'purple');
+            .attr('cx', x(scene2AnnDate))
+            .attr('cy', y(scene2AnnData.count))
+            .attr('r', 5)
+            .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene2AnnDate) - 45) // Adjust as needed, -left +right
-        .attr('y', y(scene2AnnData.count) - 85) // Adjust as needed, -up +down
-        .attr('text-anchor', 'start')
-        .style('font-size', '12px')
-        .style('fill', 'black')
-        .style('font-weight', 'bold')
-        .text('Orlando Shooting');
+            .attr('x', x(scene2AnnDate) - 45) // Adjust as needed, -left +right
+            .attr('y', y(scene2AnnData.count) - 85) // Adjust as needed, -up +down
+            .attr('text-anchor', 'start')
+            .style('font-size', '12px')
+            .style('fill', 'black')
+            .style('font-weight', 'bold')
+            .text('Orlando Shooting');
+
+        text.append('tspan')
+            .attr('x', x(scene2AnnDate) - 45) // Same x position for all tspans
+            .attr('dy', '1em') 
+            .text('50 Killed');
+
+        text.append('tspan')
+            .attr('x', x(scene2AnnDate) - 45)
+            .attr('dy', '1.2em') 
+            .text('53 Injured');
+
+        text.append('tspan')
+            .attr('x', x(scene2AnnDate) - 45)
+            .attr('dy', '1.4em') 
+            .text('Major incidents marked by spike in injuries and kills line');
     }
 
     // Scene 3 annotation
@@ -356,19 +371,34 @@ function createChart(startDate, endDate, sceneNumber) {
     if (sceneNumber==3 && scene3AnnData) {
         // mark data point with circle
         g.append('circle')
-        .attr('cx', x(scene3AnnDate))
-        .attr('cy', y(scene3AnnData.injured))
-        .attr('r', 5)
-        .style('fill', 'purple');
+            .attr('cx', x(scene3AnnDate))
+            .attr('cy', y(scene3AnnData.injured))
+            .attr('r', 5)
+            .style('fill', 'purple');
 
         g.append('text')
-        .attr('x', x(scene3AnnDate) - 130) // Adjust as needed, -left +right
-        .attr('y', y(scene3AnnData.injured) + 50) // Adjust as needed, -up +down
-        .attr('text-anchor', 'start')
-        .style('font-size', '12px')
-        .style('fill', 'black')
-        .style('font-weight', 'bold')
-        .text('Vegas Shooting');
+            .attr('x', x(scene3AnnDate) - 130) // Adjust as needed, -left +right
+            .attr('y', y(scene3AnnData.injured) + 50) // Adjust as needed, -up +down
+            .attr('text-anchor', 'start')
+            .style('font-size', '12px')
+            .style('fill', 'black')
+            .style('font-weight', 'bold')
+            .text('Vegas Shooting');
+
+        text.append('tspan')
+            .attr('x', x(scene3AnnDate) - 130)
+            .attr('dy', '1em') 
+            .text('59 Killed');
+
+        text.append('tspan')
+            .attr('x', x(scene3AnnDate) - 130)
+            .attr('dy', '1.2em') 
+            .text('489 Injured');
+
+        text.append('tspan')
+            .attr('x', x(scene3AnnDate) - 130)
+            .attr('dy', '1.4em') 
+            .text('Biggest incident in recent years');
     }
 
     // Create date slider for scene 4
