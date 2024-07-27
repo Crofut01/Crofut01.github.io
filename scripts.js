@@ -325,6 +325,58 @@ function createChart(startDate, endDate, sceneNumber) {
         console.error('no point found on scene1');
     }
 
+    // Scene 2 annotation
+    // Jun 12 Orlando shooting
+    const scene2AnnDate = new Date('2016-06-12');
+    const scene2AnnDateString = scene2AnnDate.toISOString().split('T')[0];
+    const scene2AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene2AnnDateString);
+
+    if (scene2AnnData) {
+        // mark data point with circle
+        g.append('circle')
+        .attr('cx', x(scene2AnnDate))
+        .attr('cy', y(scene2AnnData.count))
+        .attr('r', 5)
+        .style('fill', 'purple');
+
+        g.append('text')
+        .attr('x', x(scene2AnnDate) + 55) // Adjust as needed
+        .attr('y', y(scene2AnnData.count) - 35) // Adjust as needed
+        .attr('text-anchor', 'start')
+        .style('font-size', '12px')
+        .style('fill', 'black')
+        .style('font-weight', 'bold')
+        .text('Orlando Shooting');
+    } else {
+        console.error('no point found on scene2');
+    }
+
+    // Scene 3 annotation
+    // Oct 1 Vegas shooting
+    const scene3AnnDate = new Date('2017-10-01');
+    const scene3AnnDateString = scene3AnnDate.toISOString().split('T')[0];
+    const scene3AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene3AnnDateString);
+
+    if (scene3AnnData) {
+        // mark data point with circle
+        g.append('circle')
+        .attr('cx', x(scene3AnnDate))
+        .attr('cy', y(scene3AnnData.count))
+        .attr('r', 5)
+        .style('fill', 'purple');
+
+        g.append('text')
+        .attr('x', x(scene3AnnDate) + 55) // Adjust as needed
+        .attr('y', y(scene3AnnData.count) - 35) // Adjust as needed
+        .attr('text-anchor', 'start')
+        .style('font-size', '12px')
+        .style('fill', 'black')
+        .style('font-weight', 'bold')
+        .text('July 4th tends to have more incidents every year');
+    } else {
+        console.error('no point found on scene3');
+    }
+
     // Create date slider for scene 4
     if (sceneNumber == 4) {
 
