@@ -135,7 +135,7 @@ function createChart(startDate, endDate, sceneNumber) {
     // set the dimensions of the svg
     const svgWidth = window.innerWidth;
     const svgHeight = window.innerHeight;
-    const margin = { top: 200, right: 100, bottom: 200, left: 100 };
+    const margin = { top: 200, right: 200, bottom: 200, left: 200 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
     
