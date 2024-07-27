@@ -52,13 +52,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Call createChart for different scene numbers
         switch (index) {
             case 0:
-                createChart('2015-01-01', '2015-12-31', index);
+                createChart('2015-01-01', '2015-12-31', index+1);
                 break;
             case 1:
-                createChart('2016-01-01', '2016-12-31', index);
+                createChart('2016-01-01', '2016-12-31', index+1);
                 break;
             case 2:
-                createChart('2017-01-01', '2017-12-31', index);
+                createChart('2017-01-01', '2017-12-31', index+1);
                 break;
             case 3:
                 createChart(minDate, maxDate, 4);
@@ -305,6 +305,7 @@ function createChart(startDate, endDate, sceneNumber) {
     const scene1AnnData = aggDataArr.find(d => d.date.toISOString().split('T')[0] === scene1AnnDateString);
 
     if (sceneNumber==1 && scene1AnnData) {
+        console.log('Annotation 1 added');
         // mark data point with circle
         g.append('circle')
         .attr('cx', x(scene1AnnDate))
