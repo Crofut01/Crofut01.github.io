@@ -339,7 +339,7 @@ function createChart(startDate, endDate, sceneNumber) {
 
         const text2 = g.append('text')
             .attr('x', x(scene2AnnDate) - 45) // Adjust as needed, -left +right
-            .attr('y', y(scene2AnnData.count) - 85) // Adjust as needed, -up +down
+            .attr('y', y(scene2AnnData.count) - 125) // Adjust as needed, -up +down
             .attr('text-anchor', 'start')
             .style('font-size', '12px')
             .style('fill', 'black')
@@ -363,7 +363,7 @@ function createChart(startDate, endDate, sceneNumber) {
         text2.append('tspan')
             .attr('x', x(scene2AnnDate) - 45)
             .attr('dy', '1.6em') 
-            .text('Major incidents marked by spike in injuries and kills line');
+            .text('Spike in kills and injuries');
     }
 
     // Scene 3 annotation
@@ -381,7 +381,7 @@ function createChart(startDate, endDate, sceneNumber) {
             .style('fill', 'purple');
 
         const text3 = g.append('text')
-            .attr('x', x(scene3AnnDate) - 130) // Adjust as needed, -left +right
+            .attr('x', x(scene3AnnDate) - 170) // Adjust as needed, -left +right
             .attr('y', y(scene3AnnData.injured) + 50) // Adjust as needed, -up +down
             .attr('text-anchor', 'start')
             .style('font-size', '12px')
@@ -390,17 +390,17 @@ function createChart(startDate, endDate, sceneNumber) {
             .text('Vegas Shooting');
 
         text3.append('tspan')
-            .attr('x', x(scene3AnnDate) - 130)
+            .attr('x', x(scene3AnnDate) - 170)
             .attr('dy', '1em') 
             .text('59 Killed');
 
         text3.append('tspan')
-            .attr('x', x(scene3AnnDate) - 130)
+            .attr('x', x(scene3AnnDate) - 170)
             .attr('dy', '1.2em') 
             .text('489 Injured');
 
         text3.append('tspan')
-            .attr('x', x(scene3AnnDate) - 130)
+            .attr('x', x(scene3AnnDate) - 170)
             .attr('dy', '1.4em') 
             .text('Biggest incident in recent years');
     }
