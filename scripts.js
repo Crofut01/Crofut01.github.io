@@ -343,22 +343,26 @@ function createChart(startDate, endDate, sceneNumber) {
             .attr('text-anchor', 'start')
             .style('font-size', '12px')
             .style('fill', 'black')
-            .style('font-weight', 'bold')
+            .style('font-weight', 'bold');
+
+        text.append('tspan')
+            .attr('x', x(scene2AnnDate) - 45)
+            .attr('dy', '1em') 
             .text('Orlando Shooting');
 
         text.append('tspan')
             .attr('x', x(scene2AnnDate) - 45) // Same x position for all tspans
-            .attr('dy', '1em') 
+            .attr('dy', '1.2em') 
             .text('50 Killed');
 
         text.append('tspan')
             .attr('x', x(scene2AnnDate) - 45)
-            .attr('dy', '1.2em') 
+            .attr('dy', '1.4em') 
             .text('53 Injured');
 
         text.append('tspan')
             .attr('x', x(scene2AnnDate) - 45)
-            .attr('dy', '1.4em') 
+            .attr('dy', '1.6em') 
             .text('Major incidents marked by spike in injuries and kills line');
     }
 
