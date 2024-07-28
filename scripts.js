@@ -337,7 +337,7 @@ function createChart(startDate, endDate, sceneNumber) {
             .attr('r', 5)
             .style('fill', 'purple');
 
-        g.append('text')
+        const text2 = g.append('text')
             .attr('x', x(scene2AnnDate) - 45) // Adjust as needed, -left +right
             .attr('y', y(scene2AnnData.count) - 85) // Adjust as needed, -up +down
             .attr('text-anchor', 'start')
@@ -345,22 +345,22 @@ function createChart(startDate, endDate, sceneNumber) {
             .style('fill', 'black')
             .style('font-weight', 'bold');
 
-        text.append('tspan')
+        text2.append('tspan')
             .attr('x', x(scene2AnnDate) - 45)
             .attr('dy', '1em') 
             .text('Orlando Shooting');
 
-        text.append('tspan')
+        text2.append('tspan')
             .attr('x', x(scene2AnnDate) - 45) // Same x position for all tspans
             .attr('dy', '1.2em') 
             .text('50 Killed');
 
-        text.append('tspan')
+        text2.append('tspan')
             .attr('x', x(scene2AnnDate) - 45)
             .attr('dy', '1.4em') 
             .text('53 Injured');
 
-        text.append('tspan')
+        text2.append('tspan')
             .attr('x', x(scene2AnnDate) - 45)
             .attr('dy', '1.6em') 
             .text('Major incidents marked by spike in injuries and kills line');
@@ -380,7 +380,7 @@ function createChart(startDate, endDate, sceneNumber) {
             .attr('r', 5)
             .style('fill', 'purple');
 
-        g.append('text')
+        const text3 = g.append('text')
             .attr('x', x(scene3AnnDate) - 130) // Adjust as needed, -left +right
             .attr('y', y(scene3AnnData.injured) + 50) // Adjust as needed, -up +down
             .attr('text-anchor', 'start')
@@ -389,17 +389,17 @@ function createChart(startDate, endDate, sceneNumber) {
             .style('font-weight', 'bold')
             .text('Vegas Shooting');
 
-        text.append('tspan')
+        text3.append('tspan')
             .attr('x', x(scene3AnnDate) - 130)
             .attr('dy', '1em') 
             .text('59 Killed');
 
-        text.append('tspan')
+        text3.append('tspan')
             .attr('x', x(scene3AnnDate) - 130)
             .attr('dy', '1.2em') 
             .text('489 Injured');
 
-        text.append('tspan')
+        text3.append('tspan')
             .attr('x', x(scene3AnnDate) - 130)
             .attr('dy', '1.4em') 
             .text('Biggest incident in recent years');
